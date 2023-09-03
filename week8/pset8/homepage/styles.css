@@ -1,0 +1,134 @@
+h1
+{
+    font-size: 36pt;
+}
+h2 
+{
+    font-size: 28pt;
+}
+
+.navbar
+{
+    background-color: black;
+    color: white;
+    text-align: center;
+}
+
+.navbar a
+{
+    text-align: center;
+    padding: 3rem;
+}
+
+body {
+    color: #212529;
+    font-size: 1.5rem;
+    font-weight: 400;
+    line-height: 1.5;
+    margin: 0;
+    text-align: left;
+}
+
+.container {
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+
+.header {
+    background-color: black;
+    border: 10px solid red;
+    color: #fff;
+    margin-bottom: 2rem;
+    padding: 2rem 1rem;
+    text-align: center;
+}
+
+.section {
+    padding: .5rem 2rem 1rem 2rem;
+}
+
+.section:hover {
+    background-color: #f5f5f5;
+    transition: color 2s ease-in-out, background-color 0.15s ease-in-out;
+}
+
+table
+{
+    border: solid 10px red;
+    margin: 0 auto;
+}
+
+button
+{
+    width: 100px;
+    height: 100px;
+    background-color: black;
+    font-size: 3rem;
+    color: white;
+
+}
+
+a
+{
+    text-decoration: none; color: inherit;
+}
+a:hover
+{
+    color: blue;
+}
+
+input
+{
+    width: 2.5rem;
+    height: 2rem;
+    text-align: center;
+    font-size: 18pt;
+    margin-right: 1rem;
+}
+
+.check, #gradeButton
+{
+    border: 3px solid red;
+    height: 3rem;
+    width: 15rem;
+    font-size: 18pt;
+}
+    
+.number 
+{
+    height: 40px;
+    width: 40px;
+    border: 3px solid red;
+    border-radius: 50%;
+    background-color: black;
+    color: white;
+    text-align: center;
+    display: inline-block;
+    box-sizing: border-box;
+    font-size: 18pt;
+}
+
+.tables
+{
+    background-color: black;
+    color: white;
+    border: solid 10px red;
+    margin: 0 auto;
+    font-size: 2.5rem;
+}
+
+.tables td
+{
+    padding: 1rem 3rem;
+    border: solid 1px white;
+}
+
+.problem
+{
+    display: inline-block;
+    margin-left: 1rem;
+}
+
