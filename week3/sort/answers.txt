@@ -1,0 +1,37 @@
+sort1 uses: bubble sort
+
+How do you know?: 
+
+Hence we guessed that sort2 uses merge sort, bubble sort whether uses selection or or bubble sort. 
+2) When data is sorted, bubble sort is much faster than selection sort as bubble sort has a Ω(n), and selection sort has a Ω(n^2)
+
+
+Time of sorting random5000.txt: 0m0.056s
+Time of sorting sorted5000.txt: 0m0.011s
+
+Time of sorting random50000.txt: 0m5.475s
+Time of sorting sorted50000.txt: 0m0.196s
+
+sort2 uses: merge sort
+
+How do you know?: 
+
+1) When data is random, merge sort is the fastest as it has a O(n log n).
+
+Time of sorting random5000.txt: 0m0.019s
+Time of sorting sorted5000.txt: 0m0.015s
+
+Time of sorting random50000.txt: 0m0.189s
+Time of sorting sorted50000.txt: 0m0.157s
+
+
+sort3 uses: selection sort
+
+How do you know?: 
+
+3) When data is sorted, selection sort is much slower than bubble sort as selection sort has a Ω(n^2) and bubble sort has a Ω(n).
+Time of sorting random5000.txt: 0m0.036s
+Time of sorting sorted5000.txt: 0m0.036s
+
+Time of sorting random50000.txt: 0m2.337s
+Time of sorting sorted50000.txt: 0m2.478s
