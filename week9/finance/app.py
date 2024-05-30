@@ -80,14 +80,13 @@ def buy():
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
         # Make sure symbol is valid 
-        symbol = request.form.get("symbol")
-        if lookup(symbol) == None:
+        symbol = request.form.get("symbol").upper()
+        if not lookup(symbol):
             return apology("invalid symbol", 400)
 
         # Extract required stock details
         cash = db.execute("SELECT cash FROM users WHERE id = ?;", 
                           session["user_id"])[0]["cash"]
-        symbol = lookup(symbol)["symbol"]
         price = lookup(symbol)["price"]
 
         # Make sure shares are are integers:
@@ -120,6 +119,7 @@ def buy():
         type = "buy"
         time = datetime.datetime.now()
 
+        db.execute("BEGIN")
         db.execute("INSERT INTO transactions (symbol, shares, type, time) VALUES (?, ?, ?, ?)", 
                    symbol, purchased_shares, type, time)
         transaction_id = db.execute("SELECT MAX(id) FROM transactions")[0]["MAX(id)"]
@@ -138,6 +138,7 @@ def buy():
         # Update user's cash
         cash = cash - total
         db.execute("UPDATE users SET cash = ? WHERE id = ?;", cash, session["user_id"])
+        db.execute("COMMIT")
         # Redirect user to home page
         return redirect("/")
     # User reached route via GET (as by clicking a link or via redirect)
@@ -152,13 +153,17 @@ def history():
     transactions = db.execute(
         "SELECT symbol, shares, type, time FROM transactions WHERE id IN (SELECT transaction_id FROM transacted WHERE user_id = ?)", session["user_id"])
     transaction_details = []
+    prices = {}
     for transaction in transactions:
-        symbol = transaction["symbol"]
+        symbol = transaction["symbol"].upper()
         print(symbol)
         type = transaction["type"]
         shares = int(transaction["shares"])
         time = transaction["time"]
-        price = lookup(symbol)["price"]
+        price = prices.get(symbol, None)
+        if not price:
+            price = lookup(symbol)["price"]
+            prices[symbol] = price
         
         transaction_details.append({
             'symbol': symbol,
@@ -225,13 +230,12 @@ def quote():
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
         # If symbol is invalid, retrun apology
-        symbol = request.form.get("symbol")
+        symbol = request.form.get("symbol").upper()
         if lookup(symbol) == None:
             return apology("invalid symbol", 400)
         
         # If symbol is valid, return the stock quote of this symbol
         price = "{:.2f}".format(lookup(symbol)["price"])
-        symbol = lookup(symbol)["symbol"]
         return render_template("quoted.html", symbol=symbol, price=price)
      
     # User reached route via GET (as by clicking a link or via redirect)
