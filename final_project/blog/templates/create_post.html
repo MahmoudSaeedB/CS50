@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Create New Post
+{% endblock %}
+
+{% block main %}
+
+<div class="container">
+    <h1 class="mb-4">Create New Post</h1>
+    <form id="postForm" action="/create_post" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+            <input type="text" class="form-control" id="title" name="title" placeholder="Title" minlength="4
+            " maxlength="64" required>
+        </div>
+        <div class="mb-3">
+            <label for="image" class="form-label text-left">Image:</label>
+            <input type="file" class="form-control" id="image" name="image" accept="image/*">
+        </div>
+        <div class="mb-3">
+            <textarea class="form-control" id="body" name="body" placeholder="Body" minlength="8" maxlength="1024" required></textarea>
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Publish</button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

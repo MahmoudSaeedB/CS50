@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    {{ post.title }}
+{% endblock %}
+
+{% block main %}
+
+<div class="container">
+    <h1 class="my-4">{{ post.title }}</h1>
+    {% if post.image_path %}
+    <img src="{{ url_for('static', filename=post.image_path.split('static/', 1)[1]) }}" class="img-fluid mb-3 d-block mx-auto" alt="Image Post" style="max-height: 200px;" title="Post Image">
+    {% endif %}
+    <p class="left">{{ post.body }}</p>
+    <p><small class="text-muted">{{ post.time }}</small></p>
+    <p><small class="text-muted">Posted by {{ post.username }}</small></p>
+    <div class="text-center">
+        <a href="/" class="btn btn-primary">Back to Posts</a>
+    </div>
+</div
+
+{% endblock %}
