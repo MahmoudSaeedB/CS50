@@ -22,8 +22,7 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 # Configure upload folder
-images_folder = 'static/images'
-app.config['images_folder'] = images_folder
+app.config['images_folder'] = 'static/images'
 
 # Configure CS50 Library to use SQLite database
 db = SQL("sqlite:///blog.db")
@@ -41,20 +40,35 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_extensions
 
 
-@app.route("/")
+@app.route("/", defaults={"page_index": 1})
+@app.route("/<int:page_index>")
 @login_required
-def index():
-    """Show latest posts"""
-    
-    latest_posts = db.execute("""
-        SELECT posts.*, users.username
-        FROM posts
-        JOIN users ON posts.user_id = users.id
-        ORDER BY posts.time DESC
-        LIMIT 9
-    """)  
 
-    return render_template("index.html", posts=latest_posts)
+def get_page(page_index):
+    """Show a specific page of posts"""
+
+    # Get the total number of posts
+    total_posts = int(db.execute("SELECT COUNT(*) FROM posts")[0]['COUNT(*)'])
+
+    # Get the current page of posts   
+    page_size = 9
+    offset = (page_index - 1) * page_size
+    try: 
+        posts = db.execute("""
+            SELECT posts.*, users.username
+            FROM posts
+            JOIN users ON posts.user_id = users.id
+            ORDER BY posts.time DESC
+            LIMIT ? OFFSET ?
+        """, page_size, offset)
+
+    except Exception:
+        return apology("posts can not be accessed")
+        posts = []
+
+    total_pages = (total_posts + page_size - 1) // page_size 
+
+    return render_template("index.html", posts=posts, total_pages=total_pages, page_index=page_index, user_id=session["user_id"])
 
 
 @app.route("/create_post", methods=["GET", "POST"])
@@ -72,13 +86,13 @@ def create_post():
         elif len(title) < 4 or len(title) > 64:
             return apology("Title's length should be within 4 to 64 charactars", 400)
         
-        # Check for subject
+        # Check for body
         body = request.form.get("body")
         if not body:
             return apology("Must provide body", 400)
 
-        elif len(body) < 8 or len(body) > 1024:
-            return apology("Body's length should be within 8 to 1024 charactars", 400)
+        elif len(body) < 8 or len(body) > 4096:
+            return apology("Body's length should be within 8 to 4096 charactars", 400)
 
         # Check for image and store  it if exists
         image = request.files.get("image")
@@ -101,11 +115,11 @@ def create_post():
     
     # User reached route via GET (as by clicking a link or via redirect)
     else:
-        return render_template("create_post.html")
+        return render_template("create_post.html", user_id=session["user_id"])
 
 if __name__ == '__main__':
-    if not os.path.exists(images_folder):
-        os.makedirs(images_folder)
+    if not os.path.exists(app.config):
+        os.makedirs(app.config)
     app.run(debug=True)
 
 
@@ -115,7 +129,7 @@ def get_post(post_id):
     post = db.execute(
         """SELECT posts.*, users.username
         FROM posts 
-        JOIN users ON posts.user_id = users.id 
+        JOIN users ON posts.user_id = users.id
         WHERE posts.id = ?
         """, post_id
         )
@@ -124,8 +138,53 @@ def get_post(post_id):
         return apology("Post not found", 400)
 
     post = post[0] 
+    return render_template("post.html", post=post, user_id=session["user_id"])
 
-    return render_template("post.html", post=post)
+
+@app.route("/users/<int:user_id>/", defaults={"page_index": 1})
+@app.route("/users/<int:user_id>/<int:page_index>")
+@login_required
+def get_user(user_id, page_index):
+    """Show a specific page of posts by a specific user"""
+
+    author_name = db.execute(
+        """SELECT username
+        FROM users
+        WHERE id = ?
+        """, user_id
+        )[0]["username"]
+
+    if not author_name:
+        return apology("User not found", 400)
+    
+    # Get the total number of posts
+    total_posts = int(db.execute("""SELECT COUNT(*) FROM posts
+                                WHERE user_id = ?""", session["user_id"])[0]['COUNT(*)'])
+
+    # Get the current page of posts   
+    page_size = 9
+    offset = (page_index - 1) * page_size
+    try: 
+        posts = db.execute("""
+            SELECT posts.*, users.username
+            FROM posts
+            JOIN users ON posts.user_id = users.id
+            WHERE user_id = ?
+            ORDER BY posts.time DESC
+            LIMIT ? OFFSET ?
+        """, user_id, page_size, offset)
+
+    except Exception:
+        return apology("Posts not found")
+        posts = []
+
+    total_pages = (total_posts + page_size - 1) // page_size 
+
+    return render_template("user.html", posts=posts, total_pages=total_pages, page_index=page_index, user_id=session["user_id"], author_name = author_name)
+
+
+ 
+    return render_template("post.html", User=User)
 
     
 
@@ -202,19 +261,29 @@ def register():
             return apology("passwords do not match", 400)
         
         # Query database for email
-        rows = db.execute("SELECT * FROM users WHERE email = ?", request.form.get("email"))       
+        rows = db.execute("SELECT * FROM users WHERE email = ?", request.form.get("email"))   
+
         # Ensure email is available 
         if len(rows) > 0:
             return apology("Email is not available", 400)
         
         # Generate hash of the password
         hash = generate_password_hash(request.form.get("password"))
+
+       # Query database for username
+        rows = db.execute("SELECT * FROM users WHERE username = ?", request.form.get("username")) 
+
+        # Ensure username is available 
+        if len(rows) > 0:
+            return apology("Username is not available", 400)
+        
         # Insert user into database
         db.execute("INSERT INTO users (username, email, hash) VALUES(?, ?, ?)", 
                    request.form.get("username"), request.form.get("email"), hash)
 
-        # Query database for username
-        rows = db.execute("SELECT * FROM users WHERE username = ?", request.form.get("username"))       
+       # Query database for username
+        rows = db.execute("SELECT * FROM users WHERE username = ?", request.form.get("username")) 
+   
         # Remember which user has logged in
         session["user_id"] = rows[0]["id"]
         

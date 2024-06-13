@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Index
+{% endblock %}
+
+{% block main %}
+    <div class="container my-3" style="width: 50%">
+        <h2 class="my-4">Latest Posts by {{ author_name }}</h1>
+    </div>
+
+    {% for post in posts %}
+        <div class="container mb-3">
+            <h4>{{ post.title }}</h4>
+            {% if post.image_path %}
+            <img src="{{ url_for('static', filename=post.image_path.split('static/', 1)[1]) }}" class="img-fluid mb-3 d-block mx-auto" alt="Image Post" style="max-height: 200px;" title="Post Image">
+            {% endif %}
+            <p class="post_body">{{ post.body[:64] }}{% if post.body|length > 64 %}...{% endif %} <a href="/posts/{{ post.id }}">read more</a>       
+            </p>
+            <div class = "post_info">
+                <p><small class="text-muted">{{ post.time }}</small></p>
+                <p><small class="text-muted">Posted by  <a href="/users/{{ post.user_id }}">"{{ author_name }}"</a></small></p>
+            </div>
+        </div>
+    {% endfor %}
+
+    <div class="container text-center mb-3">
+      <ul class="pagination justify-content-center">
+
+        {% if page_index > 1 %}
+        <li class="page-item"><a href="{{ page_index - 1 }}" class="page-link">Previous</a></li>
+        {% endif %}     
+
+        <li class = "page-item"><a href="{{ page_index }}" class="page-link ative"> Page {{ page_index }}</a></li>
+
+        {% if page_index < total_pages %}
+        <li class="page-item"><a href="{{ page_index + 1 }}" class="page-link">Next</a></li>
+
+        {% endif %}
+      </ul>
+    </div>
+
+{% endblock %}

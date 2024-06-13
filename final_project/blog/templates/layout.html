@@ -30,9 +30,14 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbar">
                     {% if session["user_id"] %}
-                        <ul class="navbar-nav left">
-                            <li class="nav-item"><a class="nav-link" href="/create_post"> + NEW POST</a></li>
+                        <ul class="navbar-nav left nav-item-spacing">
+                            <li class="nav-item"><a class="nav-link" href="/create_post">+ NEW POST</a></li>
+
                         </ul>
+                        <ul class="navbar-nav left">
+                            <li class="nav-item"><a class="nav-link" href="/users/{{ user_id}}">Profile</a></li>
+                        </ul>
+
                         <ul class="navbar-nav ms-auto mt-2">
                             <li class="nav-item"><a class="nav-link" href="/logout">Log Out</a></li>
                         </ul>

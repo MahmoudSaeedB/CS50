@@ -38,6 +38,16 @@ nav .nav-link {
     color: #206132;
     font-size: 15pt;
 }
+.nav-item-spacing > .nav-link {
+    margin: 0 0.5rem;
+}
+
+.container-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* Ensure the container has a height */
+}
 
 .navbar-nav.left {
     margin-left: 0pt;
@@ -104,4 +114,8 @@ p.left{
 
 .post_info {
     font-size: 10pt;
+}
+
+.pagination {
+    text-align: center; 
 }

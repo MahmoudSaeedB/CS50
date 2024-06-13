@@ -6,8 +6,10 @@
 
 {% block main %}
 
+<div class="container my-3" style="width: 50%">
+    <h2 class="my-4">Create New Post</h1>
+</div>
 <div class="container">
-    <h1 class="mb-4">Create New Post</h1>
     <form id="postForm" action="/create_post" method="post" enctype="multipart/form-data">
         <div class="mb-3">
             <input type="text" class="form-control" id="title" name="title" placeholder="Title" minlength="4
@@ -18,7 +20,7 @@
             <input type="file" class="form-control" id="image" name="image" accept="image/*">
         </div>
         <div class="mb-3">
-            <textarea class="form-control" id="body" name="body" placeholder="Body" minlength="8" maxlength="1024" required></textarea>
+            <textarea class="form-control" id="body" name="body" placeholder="Body" minlength="8" maxlength="4069" required></textarea>
         </div>
         <div class="text-center">
             <button type="submit" class="btn btn-primary">Publish</button>
