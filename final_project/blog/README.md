@@ -1,8 +1,8 @@
-# Bermbali Blog
+# BermbaliBlog
 #### Video Demo: https://www.youtube.com/watch?v=VsvsPlv11vQ
 #### Description:
 
-Welcome to Bermbali Blog, a web application inspired by my village Bermbal in the Dakahlia governorate of Egypt. This blog platform allows users to register, log in, create posts, and browse posts created by others. The goal is to provide a place for community discussions and sharing of ideas, much like the traditional gathering spots in a village.
+Welcome to BermbaliBlog, a web application inspired by my village Bermbal in the Dakahlia governorate of Egypt. This blog platform allows users to register, log in, create posts, and browse posts created by others. The goal is to provide a place for community discussions and sharing of ideas, much like the traditional gathering spots in a village.
 
 ### Project Inspiration and Acknowledgements
 
@@ -41,7 +41,7 @@ Additionally, I utilized Bootstrap to style the web application, and I must ackn
 
 14. **static/images**: This directory contains the images uploaded by users as part of their blog posts. Each image is stored with a unique path to prevent conflicts and ensure they can be properly linked to their respective posts.
 
-15. **requirements.txt**: This file lists all the dependencies required to run the Bermbali Blog application. To install these dependencies, use the command pip install -r requirements.txt. 
+15. **requirements.txt**: This file lists all the dependencies required to run the BermbaliBlog application. To install these dependencies, use the command pip install -r requirements.txt. 
 
 ### Design Choices
 
@@ -63,6 +63,6 @@ Additionally, I utilized Bootstrap to style the web application, and I must ackn
 
 ### Conclusion
 
-Bermbali Blog is a testament to the power of community and shared knowledge. By providing a platform for users to share their thoughts and ideas, it aims to foster a sense of connection and dialogue. I hope you find it both useful and enjoyable to use. 
+BermbaliBlog is a testament to the power of community and shared knowledge. By providing a platform for users to share their thoughts and ideas, it aims to foster a sense of connection and dialogue. I hope you find it both useful and enjoyable to use. 
 
-Thank you for exploring Bermbali Blog. If you have any questions or feedback, feel free to reach out.
+Thank you for exploring BermbaliBlog. If you have any questions or feedback, feel free to reach out.
